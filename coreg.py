@@ -12,8 +12,10 @@ hx = df['Hist'].mean()
 psd = df['Phy'].std()
 hsd = df['Hist'].std()
 cov = df['Phy'].cov(df['Hist'])
+# Karl-Pearson Coefficient
 r = cov/(psd*hsd)
 print('Karl-Pearson Coeff. = ', format(r, '0.3f'))
+# value of Slope
 B1 = r*(psd/hsd)
 print('Value of Slope = ', format(B1, '0.3f'))
 

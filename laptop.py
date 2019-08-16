@@ -1,6 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 
 data = pd.read_csv('https://s3.amazonaws.com/hr-testcases/399/assets/trainingdata.txt')
 # data = pd.read_csv('trainingdata.txt')

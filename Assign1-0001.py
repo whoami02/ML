@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 """
 Created on Fri Oct  8 22:04:48 2021
 
@@ -17,26 +16,28 @@ class environment(object):
     print(max_price_addon)"""
 
     def __init__(self):
-        self.time = 0
-        self.paper = random.randrange(25)
+        self.T = 0                                        #tiem counter
+        self.paper = random.randrange(25)            #initial stock of papers to buy from
         self.HistPaper = []                                 #Paper available in stock History
         self.HistPrice = []                                 #Price History
 
     def initial_percept(self):
-        Price = self.prices[random.randrange(len(self.prices))] + random.randrange(self.max_price_addon)
-        self.HistPrice.append(Price)
+        P = self.prices[random.randrange(len(self.prices))] + random.randrange(self.max_price_addon)
+        #Price = 200
+        self.HistPrice.append(P)
+
         self.HistPaper.append(self.paper)
-        self.dict = {'Prices': Price, 'InStock':self.paper}
+        self.dict = {'Prices': P, 'InStock':self.paper}
         return dict
 
     def do(self, Buy):
-        self.time = self.time + 1
-        inflation = self.time * 3
+        self.T = self.T + 1
+        self.inflation = self.T * 3
         B = Buy['buy_paper']
         self.paper = self.paper + B
         self.HistPaper.append(self.paper)
         #Price = self.prices[len(self.prices)]+inflation
-        Price = self.prices[self.time] + inflation + random.randrange(self.max_price_addon)
+        Price = self.prices[self.T] + self.inflation + random.randrange(self.max_price_addon)
         self.HistPrice.append(Price)
         self.dict = {'Price': Price, 'InStock':self.paper}
         return dict
@@ -47,6 +48,7 @@ class agent(object):
         self.env = env
         percept = env.initial_percept()
         self.paper_price = percept['Prices']
+        """self.paper_price = percept"""
         self.instock = percept['InStock']
 
     def go(self, n):

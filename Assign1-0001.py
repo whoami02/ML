@@ -9,6 +9,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 
+
 class environment(object):
     prices = np.random.randint(100, 500, 50)
     max_price_addon = random.randint(0,30)
@@ -25,7 +26,7 @@ class environment(object):
         Price = self.prices[random.randrange(len(self.prices))] + random.randrange(self.max_price_addon)
         self.HistPrice.append(Price)
         self.HistPaper.append(self.paper)
-        dict = {'Prices': Price, 'InStock':self.paper}
+        self.dict = {'Prices': Price, 'InStock':self.paper}
         return dict
 
     def do(self, action):
@@ -37,14 +38,14 @@ class environment(object):
         #Price = self.prices[len(self.prices)]+inflation
         Price = self.prices[self.time] + inflation + random.randrange(self.max_price_addon)
         self.HistPrice.append(Price)
-        dict = {'Price': Price, 'InStock':self.paper}
+        self.dict = {'Price': Price, 'InStock':self.paper}
         return dict
 
-
-class agent(Agent):
+class agent(object):
     def __init__(self, env):
         self.money_used = 0
-        percepts = self.env.initial_percept()
+        self.env = env
+        percepts = env.initial_percept()
         self.paper_price = percepts['Prices']
         self.instock = percepts['InStock']
 
@@ -58,10 +59,11 @@ class agent(Agent):
             self.temp = self.temp + (self.paper_price - self.temp)//2
             self.instock = percepts['InStock']
 
+
 #Driver
 env = environment()
 bot = agent(env)
 bot.go(20)
-"""print(env.initial_percept())"""
-#agent = Agent(env)
+
+
 

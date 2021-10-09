@@ -7,7 +7,7 @@ Created on Fri Oct  8 22:04:48 2021
 """
 import numpy as np
 import random
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 class environment(object):
@@ -29,10 +29,10 @@ class environment(object):
         self.dict = {'Prices': Price, 'InStock':self.paper}
         return dict
 
-    def do(self, action):
+    def do(self, Buy):
         self.time = self.time + 1
         inflation = self.time * 3
-        B = action['buy_paper']
+        B = Buy['buy_paper']
         self.paper = self.paper + B
         self.HistPaper.append(self.paper)
         #Price = self.prices[len(self.prices)]+inflation
@@ -45,25 +45,25 @@ class agent(object):
     def __init__(self, env):
         self.money_used = 0
         self.env = env
-        percepts = env.initial_percept()
-        self.paper_price = percepts['Prices']
-        self.instock = percepts['InStock']
+        percept = env.initial_percept()
+        self.paper_price = percept['Prices']
+        self.instock = percept['InStock']
 
     def go(self, n):
         Number_of_papers_to_buy = random.randrange(env.dict['InStock'])
         for i in range(n):
-            self.money_used = self.money + Number_of_papers_to_buy * self.paper_price
-            percepts = env.do({'buy_paper':Number_of_papers_to_buy})
+            self.money_used = self.money_used + Number_of_papers_to_buy * self.paper_price
+            percept = env.do({'buy_paper':Number_of_papers_to_buy})
             self.temp = self.paper_price
-            self.paper_price = percepts['Prices']
+            self.paper_price = percept['Prices']
             self.temp = self.temp + (self.paper_price - self.temp)//2
-            self.instock = percepts['InStock']
+            self.instock = percept['InStock']
 
 
 #Driver
 env = environment()
+#print(type(env)
 bot = agent(env)
 bot.go(20)
-
-
-
+#print(env.initial_percept())
+#print(env.do())
